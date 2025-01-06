@@ -1,6 +1,6 @@
-# [Application name] 
+# Django-ninja playground
 
-Provide a description of application
+Playground to start out simple with django-ninja, and build an app based on a specific use-case
 
 ## Future plans
 
