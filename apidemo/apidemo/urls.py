@@ -17,8 +17,17 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI, Schema
+from ninja.renderers import BaseRenderer
+
+class HTMLRenderer(BaseRenderer):
+    media_type = "text/html"
+
+    def render(self, request, data, response_status):
+        return data
 
 api = NinjaAPI()
+api = NinjaAPI(renderer=HTMLRenderer())
+
 
 class HelloSchema(Schema):
     name: str = "world"
@@ -30,6 +39,10 @@ def add(request, a: int, b: int):
 @api.get("/hello")
 def hello(request, name):
     return f"Hello {name}"
+
+@api.get("/hello_html")
+def hello_html(request, name):
+    return f"<h1>Hello {name}</h1>"
 
 @api.post("/hello_schema")
 def hello_schema(request, data: HelloSchema):
