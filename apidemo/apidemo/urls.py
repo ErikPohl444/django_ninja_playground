@@ -18,12 +18,15 @@ from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI, Schema
 from ninja.renderers import BaseRenderer
+from django.http import Http404
+
 
 class HTMLRenderer(BaseRenderer):
     media_type = "text/html"
 
     def render(self, request, data, response_status):
         return data
+
 
 api = NinjaAPI()
 api = NinjaAPI(renderer=HTMLRenderer())
@@ -32,17 +35,39 @@ api = NinjaAPI(renderer=HTMLRenderer())
 class HelloSchema(Schema):
     name: str = "world"
 
+
+@api.exception_handler(Http404)
+def page_not_found(request, exc):
+    return api.create_response(
+        request,
+        {"message": "Please retry later"},
+        status=404,
+    )
+
+
 @api.get("/add")
 def add(request, a: int, b: int):
     return {"result": a + b}
+
+
+@api.exception_handler(Http404)
+def not_found_handler(request, exc):
+    return api.create_response(
+        request,
+        {"detail": "Not found"},
+        status_code=404
+    )
+
 
 @api.get("/hello")
 def hello(request, name):
     return f"Hello {name}"
 
+
 @api.get("/hello_html")
 def hello_html(request, name):
     return f"<h1>Hello {name}</h1>"
+
 
 @api.post("/hello_schema")
 def hello_schema(request, data: HelloSchema):
@@ -51,13 +76,16 @@ def hello_schema(request, data: HelloSchema):
     """
     return f"Hello {data.name}"
 
+
 @api.get("/math")
 def math(request, a: int, b: int):
     return {"add": a + b, "multiply": a * b}
 
+
 @api.get("/math_another_way/{a}and{b}")
 def math_another_way(request, a: int, b: int):
     return {"add": a + b, "multiply": a * b}
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
