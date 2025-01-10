@@ -18,11 +18,9 @@ from django.contrib import admin
 from django.urls import path
 from ninja import NinjaAPI, Schema
 from ninja.renderers import BaseRenderer
-#from django.http import Http404
-from ninja.errors import Http404, HttpError
+from django.http import Http404
 from django.core.exceptions import ObjectDoesNotExist
-
-
+from ninja.errors import HttpError
 
 
 class HTMLRenderer(BaseRenderer):
@@ -32,13 +30,9 @@ class HTMLRenderer(BaseRenderer):
         return data
 
 
-api = NinjaAPI()
+# api = NinjaAPI()
 api = NinjaAPI(renderer=HTMLRenderer())
 
-urlpatterns = [
-    path('admin/', admin.site.urls),
-    path("api/", api.urls),
-]
 
 class HelloSchema(Schema):
     name: str = "world"
@@ -67,7 +61,8 @@ def not_found_handler(request, exc):
         status_code=404
     )
 
-@api.exception_handler(ObjectDoesNotExist)
+
+@api.exception_handler(Http404)
 def handle_object_does_not_exist(request, exc):
     return api.create_response(
         request,
@@ -104,4 +99,7 @@ def math_another_way(request, a: int, b: int):
     return {"add": a + b, "multiply": a * b}
 
 
-
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path("api/", api.urls),
+]
