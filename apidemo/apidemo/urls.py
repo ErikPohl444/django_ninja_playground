@@ -62,15 +62,6 @@ def not_found_handler(request, exc):
     )
 
 
-@api.exception_handler(Http404)
-def handle_object_does_not_exist(request, exc):
-    return api.create_response(
-        request,
-        {"message": "Object not found"},
-        status=404,
-    )
-
-
 @api.get("/hello")
 def hello(request, name):
     return f"Hello {name}"
@@ -98,6 +89,14 @@ def math(request, a: int, b: int):
 def math_another_way(request, a: int, b: int):
     return {"add": a + b, "multiply": a * b}
 
+
+@api.exception_handler(Http404)
+def handle_object_does_not_exist(request, exc):
+    return api.create_response(
+        request,
+        {"message": "Object not found"},
+        status=404,
+    )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
