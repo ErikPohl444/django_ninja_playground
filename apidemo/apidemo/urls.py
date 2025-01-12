@@ -19,8 +19,6 @@ from django.urls import path
 from ninja import NinjaAPI, Schema
 from ninja.renderers import BaseRenderer
 from django.http import Http404
-from django.core.exceptions import ObjectDoesNotExist
-from ninja.errors import HttpError
 
 
 class HTMLRenderer(BaseRenderer):
