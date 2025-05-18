@@ -84,18 +84,52 @@ Repo checklist:
 
 If any disclaimer exists, add it here.
 
-## Getting Started
-
-Provide non-setup instructions for getting started using the work in the repo.
-
 ## Prerequisites
 
-This section has overlap with minimum system requirements, requirements.txt, and technologies.
-I consider this anything which needs to be on your machine or available to you before installing and using the work in the repo.
+- Python 3.8 or higher installed on your system.
+- It is recommended to use a virtual environment (such as `venv` or `virtualenv`) to manage dependencies.
+- Ensure you have `pip` (Python package installer) available.
+- The following packages are required (see `requirements.txt` for full details):
+  - Django 5.1.4
+  - django-ninja 1.3.0
+  - pydantic, coverage, pytest, mypy, ruff, and other related libraries
+
+---
 
 ## Installing
 
-Provide installation steps here.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/ErikPohl444/django_ninja_playground.git
+   cd django_ninja_playground
+   ```
+2. (Recommended) Create and activate a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+3. Install the required dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+---
+
+## Getting Started
+
+1. Navigate to the `apidemo` directory:
+   ```bash
+   cd apidemo
+   ```
+2. Apply migrations:
+   ```bash
+   python manage.py migrate
+   ```
+3. Run the development server:
+   ```bash
+   python manage.py runserver
+   ```
+4. Access the application in your browser at `http://127.0.0.1:8000/`.
 
 ## Running the tests
 
